@@ -1,13 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>JavaScript App</title>
+    <link href="src/style.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <h1>JavaScript Test App</h1>
+
+    <header>
+      <div id="user-button"></div>
+    </header>
+
+    <div id="auth-2"></div>
+
+    <h2>Other auth buttons:</h2>
+    <div id="auth-links">
+      <button onclick="Clerk.openSignUp()">Sign Up</button>
+      <button onclick="Clerk.openSignIn()">Sign In</button>
+    </div>
+
+    <h2>User Profile:</h2>
+    <div id="user-profile"></div>
+
+    <h2>User info:</h2>
+    <div id="user-info"></div>
+
+    <h2>Create Organization button:</h2>
+    <div id="create-org-button"></div>
+
+    <h2>User Button (for signing out and managing account):</h2>
+    <div id="user-button"></div>
+
+    <div id="no-frontend-api-warning" hidden>
+      <h3>No Frontend API found</h3>
+      <h4>Add it to the top of <code>src/index.js</code>.</h4>
+    </div>
+
+    <h2>Memberships List</h2>
+    <ul id="memberships_list"></ul>
+
+    <h2>Invitations List</h2>
+    <ul id="invitations_list"></ul>
+
+    <h2>Send a new invitation</h2>
+    <form id="new_invitation">
+      <div>
+        <label>Email address</label>
+        <br />
+        <input type="email" id="email_address" name="email_address" />
+      </div>
+      <button>Invite</button>
+    </form>
+
+    <h2>Edit Organization</h2>
+    <form id="edit_organization">
+      <div>
+        <label>Name</label>
+        <br />
+        <input name="name" />
+      </div>
+      <button>Save</button>
+    </form>
+
+    <script
+      type="module"
+      src="/src/main.ts"
+      async
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
