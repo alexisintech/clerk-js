@@ -9,17 +9,16 @@
   <body>
     <h1>JavaScript Test App</h1>
 
-    <header>
-      <div id="user-button"></div>
-    </header>
-
-    <div id="auth-2"></div>
+    <div id="app"></div>
 
     <h2>Other auth buttons:</h2>
     <div id="auth-links">
       <button onclick="Clerk.openSignUp()">Sign Up</button>
       <button onclick="Clerk.openSignIn()">Sign In</button>
     </div>
+
+    <h2>User Button (for signing out and managing account):</h2>
+    <div id="user-button"></div>
 
     <h2>User Profile:</h2>
     <div id="user-profile"></div>
@@ -28,15 +27,7 @@
     <div id="user-info"></div>
 
     <h2>Create Organization button:</h2>
-    <div id="create-org-button"></div>
-
-    <h2>User Button (for signing out and managing account):</h2>
-    <div id="user-button"></div>
-
-    <div id="no-frontend-api-warning" hidden>
-      <h3>No Frontend API found</h3>
-      <h4>Add it to the top of <code>src/index.js</code>.</h4>
-    </div>
+    <div id="create-org"></div>
 
     <h2>Memberships List</h2>
     <ul id="memberships_list"></ul>
@@ -66,7 +57,7 @@
 
     <script
       type="module"
-      src="/src/main.ts"
+      src="/src/main.js"
       async
       crossorigin="anonymous"
     ></script>
