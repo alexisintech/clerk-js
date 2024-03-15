@@ -11,9 +11,39 @@ const clerk = new Clerk(pubKey);
 await clerk.load();
 
 if (clerk.user) {
+  console.log(clerk.user);
+  // document.getElementById("create-totp").addEventListener("click", async () => {
+  //   clerk.user
+  //     .createTOTP()
+  //     .then((res) => {
+  //       console.log(res);
+  //       document.getElementById("enter-totp-secret").removeAttribute("hidden");
+  //       document.getElementById("totp-secret").innerHTML = res.secret;
+  //       document.getElementById("verify-totp-form").removeAttribute("hidden");
+  //       document
+  //         .getElementById("verify-totp")
+  //         .addEventListener("click", async () => {
+  //           clerk.user
+  //             .verifyTOTP(document.getElementById("totp-code").value)
+  //             .then((res) => {
+  //               console.log(res);
+  //             })
+  //             .catch((error) => {
+  //               document.getElementById("error").innerHTML =
+  //                 error.errors[0].message;
+  //               console.log("An error occurred:", error.errors);
+  //             });
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       document.getElementById("error").innerHTML = error.errors[0].message;
+  //       console.log("An error occurred:", error.errors);
+  //     });
+  // });
+
   // Mount user profile
-  const userProfileComponent = document.getElementById("user-profile");
-  clerk.mountUserProfile(userProfileComponent);
+  // const userProfileComponent = document.getElementById("user-profile");
+  // clerk.mountUserProfile(userProfileComponent);
 
   // Mount user button
   const userButtonComponent = document.getElementById("user-button");
@@ -38,7 +68,7 @@ if (clerk.user) {
   const createOrgDiv = document.getElementById("create-org");
   clerk.mountCreateOrganization(createOrgDiv);
 } else {
-  // Selects for <div id="app"> and adds <div id="sign-in">
+  // Mount sign in component
   document.getElementById("app").innerHTML = `
     <div id="sign-in"></div>
   `;
