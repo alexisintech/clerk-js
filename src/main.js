@@ -42,8 +42,8 @@ if (clerk.user) {
   // });
 
   // Mount user profile
-  // const userProfileComponent = document.getElementById("user-profile");
-  // clerk.mountUserProfile(userProfileComponent);
+  const userProfileComponent = document.getElementById("user-profile");
+  clerk.mountUserProfile(userProfileComponent);
 
   // Mount user button
   const userButtonComponent = document.getElementById("user-button");
