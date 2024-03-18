@@ -13,13 +13,13 @@ await clerk.load();
 if (clerk.user) {
   console.log(clerk.user);
 
-  // Mount user profile
-  const userProfileComponent = document.getElementById("user-profile");
-  clerk.mountUserProfile(userProfileComponent);
+  // Mount user button component
+  const userbuttonDiv = document.getElementById("user-button");
+  clerk.mountUserButton(userbuttonDiv);
 
-  // Mount user button
-  const userButtonComponent = document.getElementById("user-button");
-  clerk.mountUserButton(userButtonComponent);
+  // Mount user profile component
+  const userProfileDiv = document.getElementById("user-profile");
+  clerk.mountUserProfile(userProfileDiv);
 
   // Render user info
   const userInfo = document.getElementById("user-info");
@@ -36,11 +36,15 @@ if (clerk.user) {
     document.createElement("li")
   ).textContent = `Username: ${clerk.user.username}`;
 
-  // Mount create org button
+  // Mount create organization component
   const createOrgDiv = document.getElementById("create-org");
   clerk.mountCreateOrganization(createOrgDiv);
 
-  // MEMBERSHIPS LIST
+  // Mount organization switcher component
+  const orgSwitcherDiv = document.getElementById("organization-switcher");
+  clerk.mountOrganizationSwitcher(orgSwitcherDiv);
+
+  // Render list of organization memberships
   const data = await clerk.user.getOrganizationMemberships();
   console.log(`Organization Memberships:`, data);
 
@@ -82,7 +86,7 @@ if (clerk.user) {
     }
   }
 
-  // INVITATIONS LIST
+  // Render list of organization invitations
   async function renderInvitations(organization, isAdmin) {
     const list = document.getElementById("invitations_list");
     try {
@@ -116,6 +120,7 @@ if (clerk.user) {
     }
   }
 
+  // Gets the current org, checks if the current user is an admin, renders memberships and invitations, and sets up the new invitation form.
   async function init() {
     // This is the current organization ID.
     const organizationId = clerk.organization.id;
