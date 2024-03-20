@@ -32,7 +32,10 @@ if (clerk.user) {
           // Add administrative actions:
           // Update a member's role and remove a member.
           if (isAdmin) {
-            // Show update and remove buttons
+            // Show add, update, remove member buttons
+            document
+              .getElementById("add-member-container")
+              .removeAttribute("hidden");
             document
               .getElementById("update-role-head")
               .removeAttribute("hidden");
@@ -88,6 +91,31 @@ if (clerk.user) {
                 });
             });
             row.insertCell().appendChild(removeBtn);
+
+            // Add a new member to the organization
+            document
+              .getElementById("add-member")
+              .addEventListener("click", () => {
+                const userId = document.getElementById("member-user-id").value;
+
+                organization
+                  .addMember({
+                    userId,
+                    role: "org:member",
+                  })
+                  .then((res) => {
+                    document.getElementById("response").innerHTML =
+                      JSON.stringify(res);
+                  })
+                  .catch((error) => {
+                    document
+                      .getElementById("error-container")
+                      .removeAttribute("hidden");
+                    document.getElementById("error-message").innerHTML =
+                      error.errors[0].longMessage;
+                    console.log("An error occurred:", error.errors);
+                  });
+              });
           }
         });
       } catch (error) {
