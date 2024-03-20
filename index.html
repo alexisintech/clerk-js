@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ClerkJS npm module version</title>
     <link href="src/style.css" rel="stylesheet" />
+    <style>
+      /* Style for the table */
+      table {
+        border-collapse: collapse; /* Collapse borders into a single border */
+        border: 1px solid black; /* Border for the entire table */
+      }
+
+      /* Style for table cells */
+      td,
+      th {
+        border: 1px solid black; /* Border for each cell */
+        padding: 2px; /* Optional: Add padding to cells */
+      }
+    </style>
   </head>
   <body>
     <h1>ClerkJS npm module version</h1>
@@ -32,8 +46,40 @@
     <h2>Organization Switcher component</h2>
     <div id="organization-switcher"></div>
 
+    <p id="error-container" hidden>
+      Error:
+      <span id="error-message"></span>
+    </p>
+
     <h2>Memberships List</h2>
-    <ul id="memberships_list"></ul>
+    <table id="memberships_table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Identifier</th>
+          <th>Role</th>
+          <th id="update-role-head" hidden>Update role</th>
+          <th id="remove-member-head" hidden>Remove member</th>
+        </tr>
+      </thead>
+      <tbody id="memberships_table_body"></tbody>
+    </table>
+
+    <h2>Membership Requests</h2>
+    <table id="requests_table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Identifier</th>
+          <th>Status</th>
+          <th id="add-member-head" hidden>Add member</th>
+        </tr>
+      </thead>
+      <tbody id="requests_table_body"></tbody>
+    </table>
+
+    <h2>Response:</h2>
+    <pre id="response"></pre>
 
     <h2>Invitations List</h2>
     <ul id="invitations_list"></ul>
