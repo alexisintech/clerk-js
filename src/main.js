@@ -1,5 +1,5 @@
 import "./style.css";
-import Clerk from "@clerk/clerk-js";
+import { Clerk } from "@clerk/clerk-js";
 
 const pubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -45,13 +45,12 @@ if (clerk.user) {
   clerk.mountOrganizationSwitcher(orgSwitcherDiv);
 
   // Render list of organization memberships
-  const data = await clerk.user.getOrganizationMemberships();
-  console.log(`Organization Memberships:`, data);
-
   async function renderMemberships(organization, isAdmin) {
     const list = document.getElementById("memberships_list");
     try {
-      const memberships = await organization.getMemberships();
+      const { data } = await organization.getMemberships();
+
+      const memberships = data;
       console.log(`getMemberships:`, memberships);
 
       memberships.map((membership) => {
@@ -121,12 +120,13 @@ if (clerk.user) {
   }
 
   // Gets the current org, checks if the current user is an admin, renders memberships and invitations, and sets up the new invitation form.
-  async function init() {
+  async function checkAdminAndRender() {
     // This is the current organization ID.
     const organizationId = clerk.organization.id;
 
-    const organizationMemberships =
-      await clerk.user.getOrganizationMemberships();
+    const { data } = await clerk.user.getOrganizationMemberships();
+
+    const organizationMemberships = data;
 
     const currentMembership = organizationMemberships.find(
       (membership) => membership.organization.id === organizationId
@@ -163,7 +163,7 @@ if (clerk.user) {
     }
   }
 
-  init();
+  checkAdminAndRender();
 } else {
   // Mount sign in component
   document.getElementById("app").innerHTML = `
