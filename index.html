@@ -11,51 +11,19 @@
 
     <div id="app"></div>
 
-    <h2>Other auth buttons:</h2>
-    <div id="auth-links">
-      <button onclick="Clerk.openSignUp()">Sign Up</button>
-      <button onclick="Clerk.openSignIn()">Sign In</button>
+    <div id="sign-up">
+      <h2>Sign up</h2>
+      <form id="sign-up-form">
+        <label for="sign-up-phone">Enter phone number</label>
+        <input type="tel" name="phone" id="sign-up-phone" />
+        <button type="submit">Continue</button>
+      </form>
     </div>
 
-    <h2>User Button component</h2>
-    <div id="user-button"></div>
-
-    <h2>User Profile component</h2>
-    <div id="user-profile"></div>
-
-    <h2>User info</h2>
-    <div id="user-info"></div>
-
-    <h2>Create Organization component</h2>
-    <div id="create-org"></div>
-
-    <h2>Organization Switcher component</h2>
-    <div id="organization-switcher"></div>
-
-    <h2>Memberships List</h2>
-    <ul id="memberships_list"></ul>
-
-    <h2>Invitations List</h2>
-    <ul id="invitations_list"></ul>
-
-    <h2>Send a new invitation</h2>
-    <form id="new_invitation">
-      <div>
-        <label>Email address</label>
-        <br />
-        <input type="email" id="email_address" name="email_address" />
-      </div>
-      <button>Invite</button>
-    </form>
-
-    <h2>Edit Organization</h2>
-    <form id="edit_organization">
-      <div>
-        <label>Name</label>
-        <br />
-        <input name="name" />
-      </div>
-      <button>Save</button>
+    <form id="verifying" hidden>
+      <label for="code">Enter your verification code</label>
+      <input id="code" name="code" />
+      <button type="submit" id="verify-button">Verify</button>
     </form>
 
     <script
