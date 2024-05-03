@@ -11,19 +11,22 @@
 
     <div id="signed-in"></div>
 
-    <div id="sign-up">
-      <h2>Sign up</h2>
-      <form id="sign-up-form">
-        <label for="sign-up-phone">Enter phone number</label>
-        <input type="tel" name="phone" id="sign-up-phone" />
+    <p id="error" hidden></p>
+
+    <div id="sign-in">
+      <h2>Sign in</h2>
+      <form id="sign-in-form">
+        <label for="phone">Enter phone number</label>
+        <input type="tel" name="phone" id="sign-in-phone" />
         <button type="submit">Continue</button>
       </form>
     </div>
 
     <form id="verifying" hidden>
+      <h2>Verify your phone number</h2>
       <label for="code">Enter your verification code</label>
       <input id="code" name="code" />
-      <button type="submit" id="verify-button">Verify</button>
+      <button type="submit" id="verify-button">Submit</button>
     </form>
 
     <script
