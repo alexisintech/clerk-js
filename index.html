@@ -3,21 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ClerkJS npm module version</title>
-    <link href="src/style.css" rel="stylesheet" />
+    <title>Clerk + JavaScript App</title>
   </head>
   <body>
-    <h1>ClerkJS npm module version</h1>
-
     <div id="signed-in"></div>
 
     <p id="error" hidden></p>
 
-    <div id="sign-in">
-      <h2>Sign in</h2>
-      <form id="sign-in-form">
+    <div id="sign-up">
+      <h2>Sign up</h2>
+      <form id="sign-up-form">
         <label for="phone">Enter phone number</label>
-        <input type="tel" name="phone" id="sign-in-phone" />
+        <input type="tel" name="phone" id="sign-up-phone" />
         <button type="submit">Continue</button>
       </form>
     </div>
@@ -26,7 +23,7 @@
       <h2>Verify your phone number</h2>
       <label for="code">Enter your verification code</label>
       <input id="code" name="code" />
-      <button type="submit" id="verify-button">Submit</button>
+      <button type="submit" id="verify-button">Verify</button>
     </form>
 
     <script

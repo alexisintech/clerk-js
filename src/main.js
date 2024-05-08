@@ -6,6 +6,7 @@ if (!pubKey) {
   throw new Error('Add your VITE_CLERK_PUBLISHABLE_KEY to .env file');
 }
 
+// Initialize Clerk with your Clerk publishable key
 const clerk = new Clerk(pubKey);
 await clerk.load();
 
@@ -21,41 +22,23 @@ if (clerk.user) {
 } else {
   const errorContainer = document.getElementById('error');
 
-  // Handle the sign-in form
+  // Handle the sign-up form
   document
-    .getElementById('sign-in-form')
+    .getElementById('sign-up-form')
     .addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const formData = new FormData(e.target);
-      const phone = formData.get('phone');
+      const phoneNumber = formData.get('phone');
 
       try {
-        // Start the sign-up process using the user's identifier. In this case, it's their phone number.
-        const { supportedFirstFactors } = await clerk.client.signIn.create({
-          identifier: phone,
-        });
-
-        // Find the phoneNumberId from all the available first factors for the current sign-in
-        const firstPhoneFactor = supportedFirstFactors.find((factor) => {
-          return factor.strategy === 'phone_code';
-        });
-
-        const { phoneNumberId } = firstPhoneFactor;
-
-        // Prepare first factor verification, specifying
-        // the phone code strategy.
-        await clerk.client.signIn.prepareFirstFactor({
-          strategy: 'phone_code',
-          phoneNumberId,
-        });
-
-        // Hide sign-in form
-        document.getElementById('sign-in').setAttribute('hidden', '');
+        // Start the sign-up process using the phone number method
+        await clerk.client.signUp.create({ phoneNumber });
+        await clerk.client.signUp.preparePhoneNumberVerification();
+        // Hide sign-up form
+        document.getElementById('sign-up').setAttribute('hidden', '');
         // Show verification form
         document.getElementById('verifying').removeAttribute('hidden');
-        // Clear any previous errors
-        errorContainer.setAttribute('hidden', '');
       } catch (error) {
         errorContainer.removeAttribute('hidden');
         errorContainer.innerHTML = error.errors[0].longMessage;
@@ -70,8 +53,7 @@ if (clerk.user) {
 
     try {
       // Verify the phone number
-      const verify = await clerk.client.signIn.attemptFirstFactor({
-        strategy: 'phone_code',
+      const verify = await clerk.client.signUp.attemptPhoneNumberVerification({
         code,
       });
 
