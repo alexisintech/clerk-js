@@ -8,25 +8,7 @@
   <body>
     <div id="signed-in"></div>
 
-    <div id="sign-in">
-      <h2>Sign in</h2>
-      <form id="sign-in-form">
-        <label for="email">Enter email address</label>
-        <input name="email" id="sign-in-email" />
-        <label for="password">Enter password</label>
-        <input name="password" id="sign-in-password" />
-        <button type="submit">Continue</button>
-      </form>
-    </div>
-
-    <form id="verifying" hidden>
-      <h2>Verify your account</h2>
-      <label for="totp">Enter your code</label>
-      <input id="totp" name="code" />
-      <label for="backupCode">This code is a backup code</label>
-      <input type="checkbox" id="backupCode" name="backupCode" />
-      <button type="submit" id="verify-button">Verify</button>
-    </form>
+    <button id="sign-out">Sign out</button>
 
     <script
       type="module"
