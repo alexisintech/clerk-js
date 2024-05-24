@@ -11,87 +11,11 @@ const clerk = new Clerk(pubKey);
 await clerk.load();
 
 if (clerk.user) {
-  console.log(clerk.user);
-
-  // Mount user button component
-  const userbuttonDiv = document.getElementById('user-button');
-  clerk.mountUserButton(userbuttonDiv);
-
-  // Mount user profile component
-  const userProfileDiv = document.getElementById('user-profile');
-  clerk.mountUserProfile(userProfileDiv);
-
-  // Render user info
-  const userInfo = document.getElementById('user-info');
-  userInfo.appendChild(
-    document.createElement('li')
-  ).textContent = `ID: ${clerk.user.id}`;
-  userInfo.appendChild(
-    document.createElement('li')
-  ).textContent = `First name: ${clerk.user.firstName}`;
-  userInfo.appendChild(
-    document.createElement('li')
-  ).textContent = `Last name: ${clerk.user.lastName}`;
-  userInfo.appendChild(
-    document.createElement('li')
-  ).textContent = `Username: ${clerk.user.username}`;
-
-  // Mount create organization component
-  const createOrgDiv = document.getElementById('create-org');
-  clerk.mountCreateOrganization(createOrgDiv);
-
-  // Mount organization switcher component
-  const orgSwitcherDiv = document.getElementById('organization-switcher');
-  clerk.mountOrganizationSwitcher(orgSwitcherDiv);
-
-  // Render list of organization memberships
-  const data = await clerk.user.getOrganizationMemberships();
-  console.log(`Organization Memberships:`, data);
-
-  async function renderMemberships(organization, isAdmin) {
-    const list = document.getElementById('memberships_list');
-    try {
-      const { data } = await organization.getMemberships();
-      const memberships = data;
-      console.log(`getMemberships:`, memberships);
-
-      memberships.map((membership) => {
-        const li = document.createElement('li');
-        li.textContent = `ID: ${membership.id} Identifier: ${membership.publicUserData.identifier} UserId: ${membership.publicUserData.userId} Role: ${membership.role} Permissions: ${membership.permissions}`;
-
-        // Add administrative actions; update role and remove member.
-        if (isAdmin) {
-          const updateBtn = document.createElement('button');
-          updateBtn.textContent = 'Change role';
-          updateBtn.addEventListener('click', async function (e) {
-            e.preventDefault();
-            const role = membership.role === 'admin' ? 'org:member' : 'admin';
-            await membership.update({ role });
-          });
-          li.appendChild(updateBtn);
-
-          const removeBtn = document.createElement('button');
-          removeBtn.textContent = 'Remove';
-          removeBtn.addEventListener('click', async function (e) {
-            e.preventDefault();
-            await currentOrganization.removeMember(membership.userId);
-          });
-          li.appendChild(removeBtn);
-        }
-
-        // Add the entry to the list
-        list.appendChild(li);
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   // Render list of organization invitations
   async function renderInvitations(organization, isAdmin) {
     const list = document.getElementById('invitations_list');
     try {
-      const { totalCount, data } = await organization.getInvitations();
+      const { data } = await organization.getInvitations();
 
       const invitations = data;
 
@@ -121,7 +45,7 @@ if (clerk.user) {
     }
   }
 
-  // Gets the current org, checks if the current user is an admin, renders memberships and invitations, and sets up the new invitation form.
+  // Gets the current org, checks if the current user is an admin, renders invitations, and sets up the new invitation form.
   async function init() {
     // This is the current organization ID.
     const organizationId = clerk.organization.id;
@@ -137,9 +61,9 @@ if (clerk.user) {
     if (!currentOrganization) {
       return;
     }
+
     const isAdmin = currentMembership.role === 'org:admin';
 
-    renderMemberships(currentOrganization, isAdmin);
     renderInvitations(currentOrganization, isAdmin);
 
     if (isAdmin) {
