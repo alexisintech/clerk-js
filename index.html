@@ -32,8 +32,27 @@
     <h2>Organization Switcher component</h2>
     <div id="organization-switcher"></div>
 
-    <h2>Memberships List</h2>
-    <ul id="memberships_list"></ul>
+    <h2>Update organization</h2>
+    <form id="update-organization">
+      <label for="name">Name</label>
+      <input id="name" name="name" />
+      <button>Update</button>
+    </form>
+
+    <h2>Joined organizations</h2>
+    <table id="memberships_table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Organization</th>
+          <th>Joined</th>
+          <th>Role</th>
+          <th id="update-role-head" hidden>Update role</th>
+          <th id="remove-member-head" hidden>Remove member</th>
+        </tr>
+      </thead>
+      <tbody id="memberships_table_body"></tbody>
+    </table>
 
     <h2>Invitations List</h2>
     <ul id="invitations_list"></ul>
@@ -46,16 +65,6 @@
         <input type="email" id="email_address" name="email_address" />
       </div>
       <button>Invite</button>
-    </form>
-
-    <h2>Edit Organization</h2>
-    <form id="edit_organization">
-      <div>
-        <label>Name</label>
-        <br />
-        <input name="name" />
-      </div>
-      <button>Save</button>
     </form>
 
     <script
