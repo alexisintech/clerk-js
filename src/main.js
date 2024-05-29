@@ -11,7 +11,7 @@ const clerk = new Clerk(pubKey);
 await clerk.load();
 
 if (clerk.user) {
-  console.log(clerk.user);
+  console.log('User', clerk.user);
 
   // Mount user button component
   const userbuttonDiv = document.getElementById('user-button');
@@ -47,7 +47,6 @@ if (clerk.user) {
   if (clerk.organization) {
     // Edit organization
     const form = document.getElementById('update-organization');
-    console.log(form);
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -61,9 +60,33 @@ if (clerk.user) {
 
       clerk.organization
         .update({ name: inputEl.value })
-        .then((res) => console.log(res))
+        .then((res) => console.log('Org updated:', res))
         .catch((error) => console.log('An error occurred:', error));
     });
+
+    // Custom org switcher
+    async function customOrgSwitcher() {
+      const orgList = document.getElementById('custom-org-switcher');
+      try {
+        const { data } = await clerk.user.getOrganizationMemberships();
+        const userMemberships = data;
+        console.log(`userMemberships:`, data);
+
+        userMemberships.map((membership) => {
+          const li = document.createElement('li');
+          li.textContent = membership.organization.name;
+          const button = document.createElement('button');
+          button.textContent = 'Select';
+          button.addEventListener('click', async function () {
+            await clerk.setActive({ organization: membership.organization.id });
+          });
+          li.appendChild(button);
+          orgList.appendChild(li);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
     // Render list of organization memberships
     const data = await clerk.user.getOrganizationMemberships();
@@ -151,6 +174,44 @@ if (clerk.user) {
       }
     }
 
+    // Render table of organization membership requests
+    async function renderRequests() {
+      const requestsTable = document.getElementById(
+        'membership-requests-table'
+      );
+      try {
+        const { data } = await clerk.organization.getMembershipRequests();
+        const requests = data;
+        console.log(`Organization Memberships Requests:`, requests);
+
+        requests.map((request) => {
+          const row = requestsTable.insertRow();
+          row.insertCell().textContent = request.publicUserData.identifier;
+          row.insertCell().textContent = request.createdAt.toLocaleDateString();
+
+          // Accept request
+          const acceptBtn = document.createElement('button');
+          acceptBtn.textContent = 'Accept';
+          acceptBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            await request.accept();
+          });
+          row.insertCell().appendChild(acceptBtn);
+
+          // Reject request
+          const rejectBtn = document.createElement('button');
+          rejectBtn.textContent = 'Reject';
+          rejectBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            await request.reject();
+          });
+          row.insertCell().appendChild(rejectBtn);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     // Render list of organization invitations
     async function renderInvitations(organization, isAdmin) {
       const list = document.getElementById('invitations_list');
@@ -205,6 +266,8 @@ if (clerk.user) {
 
       renderMemberships(currentOrganization, isAdmin);
       renderInvitations(currentOrganization, isAdmin);
+      customOrgSwitcher();
+      renderRequests();
 
       if (isAdmin) {
         const form = document.getElementById('new_invitation');
@@ -216,7 +279,6 @@ if (clerk.user) {
           }
 
           try {
-            console.log(inputEl.value);
             await currentOrganization.inviteMember({
               emailAddress: inputEl.value,
               role: 'org:member',
