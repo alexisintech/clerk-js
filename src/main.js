@@ -89,21 +89,19 @@ if (clerk.user) {
     }
 
     // Render list of organization memberships
-    const data = await clerk.user.getOrganizationMemberships();
-    console.log(`Organization Memberships:`, data);
-
     async function renderMemberships(organization, isAdmin) {
-      const list = document.getElementById('memberships_list');
       try {
         const { data } = await organization.getMemberships();
         const memberships = data;
         console.log(`getMemberships:`, memberships);
 
         memberships.map((membership) => {
-          const membershipTable = document.getElementById('memberships_table');
+          const membershipTable = document.getElementById(
+            'memberships-table-body'
+          );
           const row = membershipTable.insertRow();
+          row.insertCell().textContent = membership.publicUserData.userId;
           row.insertCell().textContent = membership.publicUserData.identifier;
-          row.insertCell().textContent = membership.organization.name;
           row.insertCell().textContent =
             membership.createdAt.toLocaleDateString();
           row.insertCell().textContent = membership.role;
@@ -127,21 +125,17 @@ if (clerk.user) {
             updateBtn.textContent = 'Change role';
             updateBtn.addEventListener('click', async function (e) {
               e.preventDefault();
+
               const role =
                 membership.role === 'org:admin' ? 'org:member' : 'org:admin';
+
               await organization
                 .updateMember({ userId, role })
                 .then((res) => {
-                  document.getElementById('response').innerHTML =
-                    JSON.stringify(res);
+                  console.log(`updateMember response:`, res);
                 })
                 .catch((error) => {
-                  document
-                    .getElementById('error-container')
-                    .removeAttribute('hidden');
-                  document.getElementById('error-message').innerHTML =
-                    error.errors[0].longMessage;
-                  console.log('An error occurred:', error.errors);
+                  console.log('An error occurred:', error);
                 });
             });
             row.insertCell().appendChild(updateBtn);
@@ -151,34 +145,23 @@ if (clerk.user) {
             removeBtn.textContent = 'Remove';
             removeBtn.addEventListener('click', async function (e) {
               e.preventDefault();
+
               await organization
                 .removeMember(userId)
-                .then((res) => {
-                  document.getElementById('response').innerHTML =
-                    JSON.stringify(res);
-                })
-                .catch((error) => {
-                  document
-                    .getElementById('error-container')
-                    .removeAttribute('hidden');
-                  document.getElementById('error-message').innerHTML =
-                    error.errors[0].longMessage;
-                  console.log('An error occurred:', error.errors);
-                });
+                .then((res) => console.log(`removeMember response:`, res))
+                .catch((error) => console.log('An error occurred:', error));
             });
             row.insertCell().appendChild(removeBtn);
           }
         });
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.log('An error occurred:', error);
       }
     }
 
     // Render table of organization membership requests
     async function renderRequests() {
-      const requestsTable = document.getElementById(
-        'membership-requests-table'
-      );
+      const requestsTable = document.getElementById('requests-table-body');
       try {
         const { data } = await clerk.organization.getMembershipRequests();
         const requests = data;
@@ -246,6 +229,25 @@ if (clerk.user) {
       }
     }
 
+    async function renderJoinedOrgs() {
+      const { data } = await clerk.user.getOrganizationMemberships();
+
+      const memberships = data;
+      console.log(`userMemberships:`, memberships);
+
+      memberships.map((membership) => {
+        const membershipTable = document.getElementById(
+          'joined-orgs-table-body'
+        );
+        const row = membershipTable.insertRow();
+        row.insertCell().textContent = membership.publicUserData.identifier;
+        row.insertCell().textContent = membership.organization.name;
+        row.insertCell().textContent =
+          membership.createdAt.toLocaleDateString();
+        row.insertCell().textContent = membership.role;
+      });
+    }
+
     // Gets the current org, checks if the current user is an admin, renders memberships and invitations, and sets up the new invitation form.
     async function init() {
       // This is the current organization ID.
@@ -268,6 +270,7 @@ if (clerk.user) {
       renderInvitations(currentOrganization, isAdmin);
       customOrgSwitcher();
       renderRequests();
+      renderJoinedOrgs();
 
       if (isAdmin) {
         const form = document.getElementById('new_invitation');
